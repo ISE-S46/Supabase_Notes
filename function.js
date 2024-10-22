@@ -16,26 +16,43 @@ async function fetchNotes() {
         console.error('Error fetching data:', error);
         document.getElementById('notes').innerHTML = 'Error fetching data';
     } else {
-        // Display the fetched notes with formatted date
+        // Display the fetched notes with a delete button
         const result = data.map(note => {
-            // Log the create_at value for debugging
-            console.log(note.created_at); // Check the format
-
-            // Parse the date and format it
-            const createdAt = new Date(note.created_at); // Parse the date string
-
-            // Check if it's a valid date
-            const formattedDate = isNaN(createdAt.getTime())
-                ? "Invalid Date"  // Handle invalid dates
-                : createdAt.toLocaleString(); // Format valid date to readable format
-
-            return `<div class="note">
-          <p><strong>ID:</strong> ${note.id}</p>
-          <p><strong>Created At:</strong> ${formattedDate}</p>
-          <p>${note.content}</p>
-        </div>`;
+            return `<div class="note" id="note-${note.id}">
+                        <p><strong>ID:</strong> ${note.id}</p>
+                        <p><strong>Created At:</strong> ${new Date(note.created_at).toLocaleString()}</p>
+                        <p>${note.content}</p>
+                        <button class="delete-btn btn btn-danger" data-id="${note.id}">Delete Note</button>
+                    </div>`;
         }).join('');
         document.getElementById('notes').innerHTML = result;
+
+        // Attach delete event listener to all delete buttons
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const noteId = this.getAttribute('data-id');
+                removeNote(noteId);  // Call removeNote function when clicked
+            });
+        });
+    }
+}
+
+// Handle note removal
+async function removeNote(id) {
+    const { error } = await supabase
+        .from('Note')  // Replace with your actual table name
+        .delete()
+        .eq('id', id);  // Delete the note with the matching ID
+
+    if (error) {
+        console.error('Error deleting note:', error);
+        alert('Error deleting note. Please try again.');
+    } else {
+        // Remove the note from the DOM
+        const noteElement = document.getElementById(`note-${id}`);
+        if (noteElement) {
+            noteElement.remove();
+        }
     }
 }
 
