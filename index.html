@@ -11,18 +11,27 @@
 </head>
 
 <body>
-    <div class="container">
+    <nav class="navbar">
+        <div class="container-fluid justify-content-center">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container mt-3">
         <h1>Supabase Note Taking App</h1>
 
         <!-- Note Submission Form -->
         <form id="noteForm">
             <textarea id="noteInput" placeholder="Write your note here..." rows="5"></textarea>
-            <button type="submit" class="btn btn-success">Submit Note</button>
+            <button type="submit" class="btn btn-success mt-2">Submit Note</button>
         </form>
     </div>
 
     <!-- Section to display the notes -->
-    <div class="container">
+    <div class="container mt-3">
         <h2>Your Notes</h2>
         <div id="notes"></div>
     </div>
