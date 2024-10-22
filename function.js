@@ -47,7 +47,7 @@ async function fetchNotes(searchQuery = '') {
                         <p><strong>Created At:</strong> ${formattedDate}</p>
                         <p id="note-content-${note.id}">${highlightedContent}</p>  <!-- Display highlighted content -->
                         <button class="delete-btn btn btn-danger" data-id="${note.id}">Delete Note</button>
-                        <button class="edit-btn btn btn-primary" data-id="${note.id}">Edit Note</button>
+                        <button class="edit-btn btn btn-secondary" data-id="${note.id}">Edit Note</button>
                     </div>`;
         }).join('');
         document.getElementById('notes').innerHTML = result;
@@ -122,7 +122,7 @@ function editNoteUI(noteId) {
 
     // Replace the content with an editable text area and save/cancel buttons
     noteContentElement.innerHTML = `<textarea id="edit-note-input-${noteId}" rows="4">${currentContent}</textarea>
-                                    <button class="save-edit-btn btn btn-success mt-2" data-id="${noteId}">Save</button>
+                                    <button class="save-edit-btn btn btn-secondary mt-2" data-id="${noteId}">Save</button>
                                     <button class="cancel-edit-btn btn btn-danger mt-2" data-id="${noteId}">Cancel</button>`;
 
     // Attach event listener to the "Save" button
