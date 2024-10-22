@@ -19,16 +19,6 @@ function formatDate(date) {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;  // Return in dd/mm/yyyy hh:mm:ss format
 }
 
-function highlightText(text, searchQuery) {
-    if (!searchQuery) return text;  // If no search query, return the original text
-
-    // Create a regular expression to find the search term (case-insensitive)
-    const regex = new RegExp(`(${searchQuery})`, 'gi');
-    
-    // Replace the matched term with a <span> that wraps the matched part
-    return text.replace(regex, `<span class="highlight">$1</span>`);
-}
-
 // Fetch and display notes from the database, optionally filtered by search query
 async function fetchNotes(searchQuery = '') {
     let { data, error } = await supabase
@@ -175,6 +165,16 @@ document.querySelector('form[role="search"]').addEventListener('submit', functio
     const searchQuery = document.querySelector('input[type="search"]').value;  // Get the search query
     fetchNotes(searchQuery);  // Fetch notes with the search query and highlight results
 });
+
+function highlightText(text, searchQuery) {
+    if (!searchQuery) return text;  // If no search query, return the original text
+
+    // Create a regular expression to find the search term (case-insensitive)
+    const regex = new RegExp(`(${searchQuery})`, 'gi');
+    
+    // Replace the matched term with a <span> that wraps the matched part
+    return text.replace(regex, `<span class="highlight">$1</span>`);
+}
 
 // Initial fetch to display all notes when the page loads
 fetchNotes();
