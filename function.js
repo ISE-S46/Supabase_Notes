@@ -55,17 +55,26 @@ async function fetchNotes(searchQuery = '') {
             return `<div class="note" id="note-${note.id}">
                         <p><strong>ID:</strong> ${note.id}</p>
                         <p><strong>Created At:</strong> ${formattedDate}</p>
-                        <p>${highlightedContent}</p>  <!-- Display highlighted content -->
+                        <p id="note-content-${note.id}">${highlightedContent}</p>  <!-- Display highlighted content -->
                         <button class="delete-btn btn btn-danger" data-id="${note.id}">Delete Note</button>
+                        <button class="edit-btn btn btn-primary" data-id="${note.id}">Edit Note</button>
                     </div>`;
         }).join('');
         document.getElementById('notes').innerHTML = result;
 
-        // Attach delete event listener to all delete buttons
+        // Attach delete event listeners
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function () {
                 const noteId = this.getAttribute('data-id');
                 removeNote(noteId);  // Call removeNote function when clicked
+            });
+        });
+
+        // Attach edit event listeners
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const noteId = this.getAttribute('data-id');
+                editNoteUI(noteId);  // Call editNoteUI to handle the edit action
             });
         });
     }
@@ -114,6 +123,50 @@ async function removeNote(id) {
             noteElement.remove();
         }
     }
+}
+
+// Display the editable content for the selected note
+function editNoteUI(noteId) {
+    const noteContentElement = document.getElementById(`note-content-${noteId}`);
+    const currentContent = noteContentElement.textContent;  // Store the current content
+
+    // Replace the content with an editable text area and save/cancel buttons
+    noteContentElement.innerHTML = `<textarea id="edit-note-input-${noteId}" rows="4">${currentContent}</textarea>
+                                    <button class="save-edit-btn btn btn-success mt-2" data-id="${noteId}">Save</button>
+                                    <button class="cancel-edit-btn btn btn-danger mt-2" data-id="${noteId}">Cancel</button>`;
+
+    // Attach event listener to the "Save" button
+    document.querySelector(`.save-edit-btn[data-id="${noteId}"]`).addEventListener('click', function () {
+        const updatedContent = document.getElementById(`edit-note-input-${noteId}`).value;
+        saveNoteEdits(noteId, updatedContent);  // Call saveNoteEdits to save the changes
+    });
+
+    // Attach event listener to the "Cancel" button to restore the original content
+    document.querySelector(`.cancel-edit-btn[data-id="${noteId}"]`).addEventListener('click', function () {
+        cancelNoteEdit(noteId, currentContent);  // Call cancelNoteEdit to cancel the edit
+    });
+}
+
+// Save the edited note content to the database
+async function saveNoteEdits(noteId, updatedContent) {
+    const { error } = await supabase
+        .from('Note')  // Replace with your actual table name
+        .update({ content: updatedContent })  // Update the content field
+        .eq('id', noteId);  // Match the note by its ID
+
+    if (error) {
+        console.error('Error updating note:', error);
+        alert('Error updating note. Please try again.');
+    } else {
+        // Refresh the notes list to show the updated content
+        fetchNotes();
+    }
+}
+
+// Restore the original note content if the user cancels the edit
+function cancelNoteEdit(noteId, originalContent) {
+    const noteContentElement = document.getElementById(`note-content-${noteId}`);
+    noteContentElement.innerHTML = originalContent;  // Restore the original content
 }
 
 // Listen to the search form submit event

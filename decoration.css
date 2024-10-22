@@ -44,3 +44,11 @@ button:hover {
     background-color: aquamarine;
     font-weight: bold;
 }
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
