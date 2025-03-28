@@ -6,7 +6,7 @@ Supabase Notes is a web-based application that allows users to create, manage, a
 - **CRUD Operations**: Create, Read, Update, and Delete notes.
 - **Responsive Design**: Accessible on both desktop and mobile devices.
 
-## Technologies Used
+## Tools Used
 
 - **Frontend**:
   - HTML
