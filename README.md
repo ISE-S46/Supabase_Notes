@@ -12,7 +12,7 @@ Supabase Notes is a web-based application that allows users to create, manage, a
   - HTML
   - CSS
     - Bootstrap Framework
-  - JavaScript
+  - TypeScript
 - **Backend**:
   - Supabase
 
@@ -32,7 +32,7 @@ Follow these steps to set up the project locally:
 - Sign up for a Supabase account.
 - Create a new organization.
 - Create a new project.
-- create new table with
+- create new table name "Note" with
   - id, int, primary key
   - content, text
   - created_at, timestampz, Default value: now()
@@ -55,6 +55,7 @@ Follow these steps to set up the project locally:
 
 ### 3. **Create .env file** at root:
 - Add your Supabase credentials:
+
     ```env
     VITE_SUPABASE_URL = your-supabase-url;
     VITE_SUPABASE_KEY = your-supabase-anonymous-key;
@@ -62,7 +63,7 @@ Follow these steps to set up the project locally:
 ### 4. **Launch the Application**:
 - Run 
 ```bash
-npm run vite
+npm run dev
 ```
 - build & preview
 ```bash

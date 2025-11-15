@@ -5,7 +5,8 @@ export default defineConfig({
     root: resolve(__dirname, 'src'),
     envDir: resolve(__dirname, './'),
     build: {
-        outDir: 'dist'
+        outDir: resolve(__dirname, 'dist'),
+        emptyOutDir: true
     },
     css: {
         preprocessorOptions: {
