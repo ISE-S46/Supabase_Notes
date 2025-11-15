@@ -20,27 +20,54 @@ Supabase Notes is a web-based application that allows users to create, manage, a
 
 Follow these steps to set up the project locally:
 
-### 1. **Clone the Repository**:
+### 1. **Clone the Repository** and install dependencies:
 
    ```bash
    git clone https://github.com/ISE-S46/Supabase_Notes.git
    cd Supabase_Notes
+
+   npm install
    ```
 ### 2. **Set Up Supabase**:
 - Sign up for a Supabase account.
 - Create a new organization.
 - Create a new project.
+- create new table with
+  - id, int, primary key
+  - content, text
+  - created_at, timestampz, Default value: now()
+- in SQL editor set policy
+
+  ```sql
+  create policy "Enable access to DB for all"
+  on "public"."Note"
+  as PERMISSIVE
+  for ALL
+  to anon, authenticated
+  using (
+    true
+  ) 
+  with check (
+    true
+  );
+  ```
 - Copy the Project URL and API keys.
 
-### 3. **Create a config.js file**:
+### 3. **Create .env file** at root:
 - Add your Supabase credentials:
-    ```js
-    const SUPABASE_URL = 'your-supabase-url';
-    const SUPABASE_ANON_KEY = 'your-anonymous-key';
+    ```env
+    VITE_SUPABASE_URL = your-supabase-url;
+    VITE_SUPABASE_KEY = your-supabase-anonymous-key;
     ```
 ### 4. **Launch the Application**:
-- Open index.html in your preferred web browser.
-    #### Or
-- Install live server extension on VSCode and click Go live button
+- Run 
+```bash
+npm run vite
+```
+- build & preview
+```bash
+npm run build
+npm run preview
+```
 
-![Notes](SupabaseNotes.png)
+![Notes](/public/SupabaseNotes.png)

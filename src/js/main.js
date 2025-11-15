@@ -1,9 +1,12 @@
-// Initialize Supabase client with your API URL and Key
-const supabaseUrl = SUPABASE_URL;
-const supabaseKey = SUPABASE_KEY;
+import '../scss/styles.scss'
+import * as bootstrap from 'bootstrap'
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 
 // Since you're using the UMD build, 'supabase' is globally available on the window object.
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Function to format the date as dd/mm/yyyy
 function formatDate(date) {

@@ -1,3 +1,2 @@
-#ignore API key
-config.js
-.vscode
+.env
+/node_modules
