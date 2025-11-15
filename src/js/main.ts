@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const DeleteBtn = document.querySelectorAll<HTMLButtonElement>('.delete-btn')
     const EditBtn = document.querySelectorAll<HTMLButtonElement>('.edit-btn')
+    const noteForm = document.getElementById("noteForm") as HTMLFormElement
 
     DeleteBtn.forEach(button => {
         button.addEventListener('click', () => {
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
+    noteForm.addEventListener('submit', PostNotes);
 });
 
 async function fetchNotes(searchQuery = ''): Promise<void> {
@@ -79,5 +81,27 @@ async function fetchNotes(searchQuery = ''): Promise<void> {
     }).join('');
 
     notes.innerHTML = result;
+}
 
+async function PostNotes(event: SubmitEvent): Promise<void> {
+    event.preventDefault();
+    const noteContent = document.getElementById('noteInput') as HTMLTextAreaElement;
+
+    if (noteContent.value.trim() === '') {
+        alert('Please enter a note.');
+        return;
+    }
+
+    // Insert the new note into the database
+    let { error } = await supabase
+        .from('Note')
+        .insert([{ content: noteContent.value }]);
+
+    if (error) {
+        console.error('Error adding note:', error);
+        alert('Error adding note. Please try again.');
+    }
+        
+    noteContent.value = '';
+    await fetchNotes();
 }
