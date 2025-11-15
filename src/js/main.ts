@@ -21,13 +21,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     const DeleteBtn = document.querySelectorAll<HTMLButtonElement>('.delete-btn')
     const EditBtn = document.querySelectorAll<HTMLButtonElement>('.edit-btn')
     const noteForm = document.getElementById("noteForm") as HTMLFormElement
+    const searchBar = document.querySelector<HTMLFormElement>('form[role="search"]')
+
+    // Listen to the search form submit event
+    searchBar?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const searchQuery = document.querySelector<HTMLInputElement>('input[type="search"]'); // Get the search query
+        fetchNotes(searchQuery?.value);
+    });
+    noteForm.addEventListener('submit', PostNote);
 
     DeleteBtn.forEach(button => {
         button.addEventListener('click', () => {
             const noteId = button.getAttribute('data-id');
 
-            console.log("test delete ", noteId)
-            // removeNote(noteId);
+            if (noteId) {
+                removeNote(noteId);
+            }
         });
     });
 
@@ -40,8 +50,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             // editNoteUI(noteId);
         });
     });
-
-    noteForm.addEventListener('submit', PostNotes);
 });
 
 async function fetchNotes(searchQuery = ''): Promise<void> {
@@ -83,7 +91,7 @@ async function fetchNotes(searchQuery = ''): Promise<void> {
     notes.innerHTML = result;
 }
 
-async function PostNotes(event: SubmitEvent): Promise<void> {
+async function PostNote(event: SubmitEvent): Promise<void> {
     event.preventDefault();
     const noteContent = document.getElementById('noteInput') as HTMLTextAreaElement;
 
@@ -92,7 +100,6 @@ async function PostNotes(event: SubmitEvent): Promise<void> {
         return;
     }
 
-    // Insert the new note into the database
     let { error } = await supabase
         .from('Note')
         .insert([{ content: noteContent.value }]);
@@ -101,7 +108,25 @@ async function PostNotes(event: SubmitEvent): Promise<void> {
         console.error('Error adding note:', error);
         alert('Error adding note. Please try again.');
     }
-        
+
     noteContent.value = '';
     await fetchNotes();
+}
+
+async function removeNote(id: string): Promise<void> {
+    const response = await supabase
+        .from('Note')
+        .delete()
+        .eq('id', id);
+
+    if (!response) {
+        console.error('Error deleting note: ', id);
+        alert(`Error deleting note ${id}. Server Error`);
+    }
+
+    const noteElement = document.getElementById(`note-${id}`) as HTMLDivElement;
+
+    if (noteElement) {
+        noteElement.remove();
+    }
 }
