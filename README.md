@@ -1,5 +1,10 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/7e738aaa-a06a-4faf-b4cb-7b3fa1ac93e3/deploy-status)](https://app.netlify.com/projects/supabase-notes/deploys)
+![Version](https://img.shields.io/badge/version-2.0-blue)
+
 # Supabase Notes
 Supabase Notes is a web application made with React and Supabase that allows users to manage their notes.
+
+### [Live Demo](https://supabase-notes.netlify.app/)
 
 ## Features
 - **Real-time Database**: Instant synchronization of notes across devices.
@@ -74,14 +79,14 @@ Follow these steps to set up the project locally:
 - Add your Supabase credentials:
 
     ```env
-    VITE_SUPABASE_URL = your-supabase-url;
-    VITE_SUPABASE_KEY = your-supabase-anonymous-key;
+    VITE_SUPABASE_URL = your-supabase-url
+    VITE_SUPABASE_KEY = your-supabase-anonymous-key
     ```
 ### 4. **Launch the Application**:
-- Run 
 ```bash
-npm run build
-npm run preview
+npm run dev        # for development
+npm run build      # for production build
+npm run preview    # preview production build
 ```
 
 ![Notes](/public/SupabaseNotes.png)
