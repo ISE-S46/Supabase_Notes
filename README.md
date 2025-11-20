@@ -1,5 +1,5 @@
 # Supabase Notes
-Supabase Notes is a web-based application that allows users to create, manage, and store notes.
+Supabase Notes is a web application made with React and Supabase that allows users to manage their notes.
 
 ## Features
 - **Real-time Database**: Instant synchronization of notes across devices.
@@ -9,10 +9,9 @@ Supabase Notes is a web-based application that allows users to create, manage, a
 ## Tools Used
 
 - **Frontend**:
-  - HTML
-  - CSS
-    - Bootstrap Framework
+  - React
   - TypeScript
+  - Tailwind CSS
 - **Backend**:
   - Supabase
 
@@ -34,26 +33,44 @@ Follow these steps to set up the project locally:
 - Create a new project.
 - create new table name "Note" with
   - id, int, primary key
+  - title, text
   - content, text
   - created_at, timestampz, Default value: now()
-- in SQL editor set policy
+- in SQL editor or at Authentication/Policies set policies:
 
   ```sql
-  create policy "Enable access to DB for all"
-  on "public"."Note"
+  create policy "Public Select"
+  on "Note"
   as PERMISSIVE
-  for ALL
-  to anon, authenticated
-  using (
-    true
-  ) 
-  with check (
-    true
-  );
+  for select
+  to anon
+  using (true);
+
+  create policy "Public Insert"
+  on "Note"
+  as PERMISSIVE
+  for insert
+  to anon
+  with check (true);
+
+  create policy "Public Update"
+  on "Note"
+  for update
+  as PERMISSIVE
+  to anon
+  using (true)
+  with check (true);
+
+  create policy "Public Delete"
+  on "Note"
+  as PERMISSIVE
+  for delete
+  to anon
+  using (true);
   ```
-- Copy the Project URL and API keys.
 
 ### 3. **Create .env file** at root:
+- Copy the Project URL and API keys.
 - Add your Supabase credentials:
 
     ```env
@@ -62,10 +79,6 @@ Follow these steps to set up the project locally:
     ```
 ### 4. **Launch the Application**:
 - Run 
-```bash
-npm run dev
-```
-- build & preview
 ```bash
 npm run build
 npm run preview
